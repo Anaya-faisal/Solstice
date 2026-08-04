@@ -2,11 +2,7 @@
 	"name": "solstice",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"lint": "biome check .",
-		"lint:fix": "biome check . --fix"
-	},
+	"main": "src/index.ts",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Anaya-faisal/Solstice.git"
@@ -14,11 +10,21 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"type": "commonjs",
+	"type": "module",
 	"bugs": {
 		"url": "https://github.com/Anaya-faisal/Solstice/issues"
 	},
 	"homepage": "https://github.com/Anaya-faisal/Solstice#readme",
+	"scripts": {
+		"lint": "biome check .",
+		"lint:fix": "biome check . --fix",
+		"prepare": "husky"
+	},
+	"lint-staged": {
+		"*.{js,ts,json}": [
+			"biome check ."
+		]
+	},
 	"dependencies": {
 		"discord.js": "^14.27.0",
 		"dotenv": "^17.4.2",
@@ -28,8 +34,11 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.5.6",
+		"@commitlint/cli": "^21.2.1",
+		"@commitlint/config-conventional": "^21.2.0",
 		"@types/node": "^26.1.2",
 		"drizzle-kit": "^0.31.10",
+		"husky": "^9.1.7",
 		"tsx": "^4.23.5",
 		"typescript": "^7.0.2"
 	}
