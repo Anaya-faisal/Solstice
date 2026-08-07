@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { Client, GatewayIntentBits } from "discord.js";
 import dotenv from "dotenv";
+import { verifyDatabaseConnection } from "./db/index.js";
 
 dotenv.config();
 
@@ -23,5 +24,7 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+verifyDatabaseConnection();
 
 client.login(process.env.DISCORD_TOKEN);
