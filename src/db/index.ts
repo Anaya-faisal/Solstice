@@ -16,17 +16,27 @@ const client = postgres(process.env.DATABASE_URL, {
 export const db = drizzle(client, { schema });
 
 export async function verifyDatabaseConnection(retries = 3, delayMs = 1000) {
+	let lastError: unknown;
+
 	for (let attempt = 1; attempt <= retries; attempt++) {
 		try {
 			await client`SELECT 1`;
 			return;
-		} catch (err) {
+		} catch (error) {
+			lastError = error;
+
 			if (attempt === retries) {
-				throw new Error(
-					`Could not connect to database after ${retries} attempts: ${err}`,
-				);
+				break;
 			}
-			await new Promise((r) => setTimeout(r, delayMs));
+			console.warn(
+				`Database connection failed (Attempt ${attempt}/${retries}). Retrying in ${delayMs}ms...`,
+			);
+
+			await new Promise((resolve) => setTimeout(resolve, delayMs));
 		}
 	}
+
+	throw new Error(`Could not connect to database after ${retries} attempts`, {
+		cause: lastError,
+	});
 }
